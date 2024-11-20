@@ -4,11 +4,21 @@
  * @type { Object.<string, import("knex").Knex.Config> }
  */
 module.exports = {
+
   development: {
     client: 'sqlite3',
     useNullAsDefault: true,
     connection: {
-      filename: './feed.sqlite3'
+      filename: './development.sqlite3'
     }
   },
+
+  production: {
+    client: 'sqlite3',
+    useNullAsDefault: true,
+    connection: {
+      filename: './production.sqlite3'
+    }
+  },
+
 };
