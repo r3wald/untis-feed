@@ -1,15 +1,11 @@
-all: clean migrate test
-
-migrate:
+development:
 	@node --env-file .env node_modules/.bin/knex migrate:up
 	@echo
-
-test:
 	@node --env-file .env test.js
 	@echo
 
 clean:
-	@rm -vf *.sqlite3
+	@rm -vf development.sqlite3
 	@echo
 
 dump-database:

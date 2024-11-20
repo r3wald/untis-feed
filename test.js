@@ -1,4 +1,6 @@
 const importer = require('./src/importer');
+const WebUntis = require('webuntis').WebUntis;
+const fs = require('fs');
 
 runAll()
     .then(() => {
@@ -12,15 +14,21 @@ runAll()
 
 async function runAll() {
 
-    const lesson1 = {id: 1, foo: "bar"};
-    await importer.add('lesson', lesson1);
+    const untis = new WebUntis(
+        process.env.UNTIS_SCHOOL,
+        process.env.UNTIS_USERNAME,
+        process.env.UNTIS_PASSWORD,
+        process.env.UNTIS_SERVER
+    );
+    await untis.login();
+    const timetable = await untis.getOwnTimetableForToday();
+    const fileName = 'timetable.json';
+    fs.writeFileSync(fileName, JSON.stringify(timetable));
+    //console.log(timetable);
 
-    const lesson2 = {id: 2, foo: "bar"};
-    await importer.add('lesson', lesson2);
-
-    const lesson3 = {id: 1, foo: "bar"};
-    await importer.add('lesson', lesson3);
-
-    const lesson4 = {id: 2, foo: "baz"};
-    await importer.add('lesson', lesson4);
+    return Promise.all(
+        timetable.map(async (lesson)=> {
+            await importer.add('lesson', lesson);
+        })
+    );
 }
