@@ -16,7 +16,7 @@ module.exports = {
                 resource_type: type,
                 resource_id: data.id,
                 json: JSON.stringify(data),
-                created: knex.fn.now(),
+                created: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW')"),
                 change: change
             })
             .then(() => {

@@ -10,8 +10,8 @@ module.exports = {
         const oldRow = await lessonRepository.get(resourceId);
 
         if (!oldRow) {
-            // console.log("new:       ",  null, " -> ",  newResource);
-            console.log("new:       ", newResource.id);
+            // console.debug("new:       ",  null, " -> ",  newResource);
+            console.debug("new:       ", newResource.id);
             return Promise.all(
                 [
                     feedRepository.add(resourceType, newResource, 'A'),
@@ -22,8 +22,8 @@ module.exports = {
 
         const oldResource = JSON.parse(oldRow.json);
         if (!_.isEqual(oldResource, newResource)) {
-            //console.log("changed:   ",  oldResource, " -> ",  newResource);
-            console.log("changed:   ", newResource.id);
+            //console.debug("changed:   ",  oldResource, " -> ",  newResource);
+            console.debug("changed:   ", newResource.id);
             return Promise.all(
                 [
                     feedRepository.add(resourceType, newResource, 'U'),
@@ -32,8 +32,8 @@ module.exports = {
             )
         }
 
-        //console.log("unchanged: ",  oldResource, " == ",  newResource);
-        console.log("unchanged: ", newResource.id);
+        //console.debug("unchanged: ",  oldResource, " == ",  newResource);
+        console.debug("unchanged: ", newResource.id);
         return await undefined;
     }
 };

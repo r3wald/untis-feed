@@ -4,7 +4,7 @@ const fs = require('fs');
 
 runAll()
     .then(() => {
-        console.log('all done');
+        console.log('done');
         process.exit(0);
     })
     .catch(error => {
