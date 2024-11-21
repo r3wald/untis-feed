@@ -3,6 +3,24 @@ const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 
 module.exports = {
 
+    count: async function () {
+        return knex('lessons')
+            .count('id as total')
+            .first()
+            .then((row) => {
+                    return row.total;
+                }
+            );
+    },
+
+    list: async function (limit, page) {
+        return knex('lessons')
+            .select('*')
+            .orderBy('created')
+            .limit(limit)
+            .offset(page * limit);
+    },
+
     get: async function (id) {
         if (!id) {
             throw new Error('no id');

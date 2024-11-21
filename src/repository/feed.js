@@ -3,6 +3,37 @@ const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 
 module.exports = {
 
+    countPendingItemsSince: async function(since) {
+        const sinceDateString = since.format('YYYY-MM-DD HH:mm:ss.SSS');
+        return knex('feed')
+            .count('id as total')
+            .whereRaw('created > ?', [sinceDateString])
+            .first()
+            .then((row) => {
+                    return row.total;
+                }
+            );
+    },
+
+    getItemsSince: async function(since) {
+        const sinceDateString = since.format('YYYY-MM-DD HH:mm:ss.SSS');
+        /*
+        console.log(knex('feed')
+            .select('*')
+            .orderBy('created', 'asc')
+            .orderBy('id', 'asc')
+            .whereRaw('created > ?', [sinceDateString])
+            .limit(1)
+            .toSQL()
+            .toNative()
+        );*/
+        return knex('feed')
+            .select('*')
+            .orderBy('created', 'id')
+            .whereRaw('created > ?', [sinceDateString])
+            .limit(10);
+    },
+
     add: async function (type, data, change) {
         if (!type) {
             throw new Error('no type');
