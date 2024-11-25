@@ -17,8 +17,8 @@
     "node" : ">=20.0.0 <24.0.0"
   },
   "scripts": {
-    "migrate": "node --env-file .env.production migrate.js",
-    "migrate:dev": "node --env-file .env.development migrate.js",
+    "migrate": "node --env-file .env.production node_modules/.bin/knex migrate:up",
+    "migrate:dev": "node --env-file .env.development node_modules/.bin/knex migrate:up",
     "import": "node --env-file .env.production import.js",
     "import:dev": "node --env-file .env.development import.js",
     "serve": "node --env-file .env.production api.js",

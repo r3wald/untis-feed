@@ -2,6 +2,14 @@ const knexConfig = require('../../knexfile');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 
 module.exports = {
+    get: async function (id) {
+        if (!id) {
+            throw new Error('no id');
+        }
+        return knex('feed')
+            .where('id', id)
+            .first();
+    },
 
     countPendingItemsSince: async function(since) {
         const sinceDateString = since.format('YYYY-MM-DD HH:mm:ss.SSS');
@@ -34,12 +42,15 @@ module.exports = {
             .limit(10);
     },
 
-    add: async function (type, data, change) {
+    add: async function (type, data, change, changes) {
         if (!type) {
             throw new Error('no type');
         }
         if (!data.id) {
             throw new Error('no id');
+        }
+        if (!change) {
+            throw new Error('no change');
         }
         return await knex('feed')
             .insert({
@@ -48,7 +59,8 @@ module.exports = {
                 resource_id: data.id,
                 json: JSON.stringify(data),
                 created: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW')"),
-                change: change
+                change: change,
+                changes: changes ? JSON.stringify(changes) : null
             })
             .then(() => {
 //                console.log('feed saved:');
