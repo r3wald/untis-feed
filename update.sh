@@ -13,11 +13,13 @@ git pull origin master
 git checkout master
 npm ci
 
+npm run migrate
+
 PM2_PID=$(pm2 pid $PM2_NAME)
 
 if [ -n "$PM2_PID" ]; then
-  echo pm2 restart $PM2_NAME
+  pm2 restart $PM2_NAME
 else
-  echo pm2 start npm --name $PM2_NAME -- start
+  pm2 start --name $PM2_NAME npm -- start
 fi
 
