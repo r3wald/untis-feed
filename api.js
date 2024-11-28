@@ -5,7 +5,7 @@ const lessonsController = require('./src/controllers/lessons');
 const feedController = require('./src/controllers/feed');
 const importer = require('./src/importer');
 
-cron.schedule('30 */5 * * *', async () => {
+cron.schedule('30 */5 * * * *', async () => {
     console.log('starting import');
     await importer.import();
 });
