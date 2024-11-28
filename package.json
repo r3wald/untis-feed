@@ -12,6 +12,10 @@
   "devDependencies": {
     "nodemon": "^3.1.7"
   },
+  "engines" : {
+    "npm" : ">=10.0.0",
+    "node" : ">=20.0.0 <24.0.0"
+  },
   "scripts": {
     "migrate": "node --env-file .env.production migrate.js",
     "migrate:dev": "node --env-file .env.development migrate.js",
