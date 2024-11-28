@@ -6,7 +6,14 @@ const moment = require('moment');
 module.exports = {
     index: async function (req, res) {
         let since = moment(0);
-        if (!!req.query.since) {
+        if (req.query.since==='yesterday') {
+            since = moment()
+                .subtract(1, 'days')
+                .set({hour: 0, minute: 0, second: 0, millisecond: 0});
+        } else if (req.query.since==='today') {
+            since = moment()
+                .set({hour: 0, minute: 0, second: 0, millisecond: 0});
+        } else if (!!req.query.since) {
             since = moment(req.query.since);
         }
         // console.log(now, req.query.since, since);
