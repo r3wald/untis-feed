@@ -22,7 +22,8 @@ module.exports = {
                     resource_id: item.resource_id,
                     typeofChange: item.change,
                     timestamp: item.created,
-                    resource: JSON.parse(item.json)
+                    resource: JSON.parse(item.json),
+                    changes: JSON.parse(item.changes)
                 };
             }
         );
