@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan')
 const lessonsController = require('./src/controllers/lessons');
 const feedController = require('./src/controllers/feed');
 const server = express();
@@ -8,11 +9,7 @@ const port = parseInt(process.env.PORT) || 2999;
 server.set('json spaces', 2);
 server.use(express.json({extended: true}));
 server.use(router);
-server.use((req, res, next) => {
-    req.time = new Date(Date.now());
-    console.log(req.time, req.method, req.hostname, req.path);
-    next();
-});
+server.use(morgan('combined'));
 
 server.get('/', require('./src/controllers/index'));
 server.get('/feed', feedController.index);
