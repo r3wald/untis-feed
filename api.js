@@ -1,14 +1,20 @@
 const express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
+const cron = require('node-cron');
 const lessonsController = require('./src/controllers/lessons');
 const feedController = require('./src/controllers/feed');
-const server = express();
-const router = express.Router();
+const importer = require('./src/importer');
 
+cron.schedule('30 */5 * * *', async () => {
+    console.log('starting import');
+    await importer.import();
+});
+
+const server = express();
 const port = parseInt(process.env.PORT) || 2999;
 server.set('json spaces', 2);
 server.use(express.json({extended: true}));
-server.use(router);
+server.use(express.Router());
 server.use(morgan('combined'));
 
 server.get('/', require('./src/controllers/index'));

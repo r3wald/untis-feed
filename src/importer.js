@@ -1,8 +1,49 @@
 const lessonRepository = require('./repository/lesson');
 const feedRepository = require('./repository/feed');
 const _ = require('lodash');
+const {WebUntis} = require("webuntis");
+const moment = require("moment/moment");
+const fs = require("fs");
 
 module.exports = {
+
+    import: async function(){
+
+        console.log("starting import");
+
+        const untis = new WebUntis(
+            process.env.UNTIS_SCHOOL,
+            process.env.UNTIS_USERNAME,
+            process.env.UNTIS_PASSWORD,
+            process.env.UNTIS_SERVER
+        );
+        await untis.login();
+
+        const today = moment()
+            .utcOffset(0)
+            .set({hour: 0, minute: 0, second: 0, millisecond: 0});
+
+        const nextWeek = moment()
+            .utcOffset(0)
+            .set({hour: 0, minute: 0, second: 0, millisecond: 0})
+            .add(7, 'days');
+
+        const timetable = await untis.getOwnTimetableForRange(
+            today.toDate(),
+            nextWeek.toDate()
+        );
+
+        if (process.env.NODE_ENV === 'development') {
+            const fileName = __dirname + '/../timetables/' + Date.now() + '.json';
+            fs.writeFileSync(fileName, JSON.stringify(timetable, null, 2));
+        }
+
+        return Promise.all(
+            timetable.map(async (lesson) => {
+                await this.add('lesson', lesson);
+            })
+        );
+    },
 
     add: async function (resourceType, newResource) {
 
