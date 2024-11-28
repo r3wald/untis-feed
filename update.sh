@@ -23,3 +23,4 @@ else
   pm2 start --name $PM2_NAME npm -- start
 fi
 
+pm2 save
