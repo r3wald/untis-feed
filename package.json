@@ -18,12 +18,21 @@
     "npm": ">=10.0.0",
     "node": ">=20.0.0 <24.0.0"
   },
+  "nodemonConfig": {
+    "verbose": true,
+    "ignore": [
+      "timetables/",
+      "*.log",
+      "*.sqlite3"
+    ],
+    "ext": "js, ejs, json"
+  },
   "scripts": {
     "migrate": "node --env-file .env.production node_modules/.bin/knex migrate:up",
     "migrate:dev": "node --env-file .env.development node_modules/.bin/knex migrate:up",
     "import": "node --env-file .env.production import.js",
     "import:dev": "node --env-file .env.development import.js",
     "start": "node --env-file .env.production api.js",
-    "start:dev": "node --env-file .env.development node_modules/.bin/nodemon --ignore timetables api.js"
+    "start:dev": "node --env-file .env.development node_modules/.bin/nodemon api.js"
   }
 }
