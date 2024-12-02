@@ -14,6 +14,14 @@ function analyzeChanges(changes, resource) {
     return "?";
 }
 
+function readableDate(resource) {
+    let result = '';
+    result += resource.date.toString().replace(/(\d\d\d\d)(\d\d)(\d\d)/, '$3.$2.$1');
+    result += ' ';
+    result += resource.startTime.toString().replace(/(\d\d?)(\d\d)/, '$1\:$2');
+    return result
+}
+
 module.exports = {
     latest: async function (req, res) {
         const items = await feedRepository.getLatestChanges();
@@ -29,6 +37,7 @@ module.exports = {
                     timestamp: item.created,
                     resource: resource,
                     changes: changes,
+                    readableDate: readableDate(resource),
                     message: analyzeChanges(changes, resource)
                 };
             }
@@ -66,6 +75,7 @@ module.exports = {
                     timestamp: item.created,
                     resource: resource,
                     changes: changes,
+                    readableDate: readableDate(resource),
                     message: analyzeChanges(changes, resource)
                 };
             }
@@ -90,6 +100,7 @@ module.exports = {
             timestamp: row.created,
             resource: resource,
             changes: changes,
+            readableDate: readableDate(resource),
             message: analyzeChanges(changes, resource)
         };
         res.json(response);

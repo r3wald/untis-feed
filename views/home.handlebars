@@ -4,9 +4,8 @@
   {{#each items}}
   <li>
       <p>
-          <small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small><br>
-            {{ resource.su.0.longname }}<br>
-          <b>{{{ message }}}</b>
+          <small><small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small><br>
+            {{ readableDate }}<br><b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b>
       </p>
   </li>
   {{/each}}
