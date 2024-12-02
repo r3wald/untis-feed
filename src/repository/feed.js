@@ -2,6 +2,22 @@ const knexConfig = require('../../knexfile');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 
 module.exports = {
+    getLatestChanges: async function (since) {
+        return knex('feed')
+            .where('change', 'U')
+            .orderBy('created', 'desc')
+            .groupBy('resource_type')
+            .groupBy('resource_id')
+            .limit(10)
+            .then(
+                (rows) => {
+                    return rows.map((item) => {
+                        return item;
+                    });
+                }
+            );
+    },
+
     get: async function (id) {
         if (!id) {
             throw new Error('no id');
@@ -11,7 +27,7 @@ module.exports = {
             .first();
     },
 
-    countPendingItemsSince: async function(since) {
+    countPendingItemsSince: async function (since) {
         const sinceDateString = since.format('YYYY-MM-DD HH:mm:ss.SSS');
         return knex('feed')
             .count('id as total')
@@ -23,7 +39,7 @@ module.exports = {
             );
     },
 
-    getItemsSince: async function(since) {
+    getItemsSince: async function (since) {
         const sinceDateString = since.format('YYYY-MM-DD HH:mm:ss.SSS');
         /*
         console.log(knex('feed')

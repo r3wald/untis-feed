@@ -1,0 +1,13 @@
+<h1>Änderungen</h1>
+
+<ul class="items">
+  {{#each items}}
+  <li>
+      <p>
+          <small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small><br>
+            {{ resource.su.0.longname }}<br>
+          <b>{{{ message }}}</b>
+      </p>
+  </li>
+  {{/each}}
+</ul>

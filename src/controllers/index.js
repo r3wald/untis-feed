@@ -10,6 +10,9 @@ module.exports = ((req, res) => {
                     },
                     lessons: {
                         href: '/lessons'
+                    },
+                    gui: {
+                        href: '/view'
                     }
                 }
             },
