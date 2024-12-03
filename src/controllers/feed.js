@@ -7,8 +7,11 @@ function analyzeChanges(changes, resource) {
     if (changes.added.code === 'cancelled') {
         return "Fällt aus!";
     }
-    if (changes.added.ro[0].longname) {
+    if (changes?.added?.ro?.length) {
         return "Findet stattdessen im Raum <i>" + changes.added.ro[0].longname + "</i> (" + changes.added.ro[0].name + ") statt.";
+    }
+    if (changes?.added?.info) {
+        return changes.added.info;
     }
     //console.log(changes);
     return "?";
