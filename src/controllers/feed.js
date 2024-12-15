@@ -11,7 +11,7 @@ function analyzeChanges(changes, resource) {
         return "Findet stattdessen im Raum <i>" + changes.added.ro[0].longname + "</i> (" + changes.added.ro[0].name + ") statt.";
     }
     if (changes?.added?.info) {
-        return changes.added.info;
+        return "Neue Information: " + changes.added.info;
     }
     //console.log(changes);
     return "?";
