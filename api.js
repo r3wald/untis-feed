@@ -8,7 +8,6 @@ const expressHandlebars = require('express-handlebars');
 require('console-stamp')(console, 'yyyy-mm-dd HH:MM:ss.l');
 
 cron.schedule('30 */5 * * * *', async () => {
-    console.log('starting import');
     await importer.import();
 });
 
