@@ -4,7 +4,7 @@ const FeedResponse = require('../models/feed-response');
 const moment = require('moment');
 
 function analyzeChanges(changes, resource) {
-    if (changes.added.code === 'cancelled') {
+    if (changes?.added?.code === 'cancelled') {
         return "Fällt aus!";
     }
     if (changes?.added?.ro?.length) {
