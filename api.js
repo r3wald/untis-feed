@@ -1,10 +1,11 @@
 const express = require('express');
-const morgan = require('morgan');
 const cron = require('node-cron');
 const lessonsController = require('./src/controllers/lessons');
 const feedController = require('./src/controllers/feed');
 const importer = require('./src/importer');
 const expressHandlebars = require('express-handlebars');
+
+require('console-stamp')(console, 'yyyy-mm-dd HH:MM:ss.l');
 
 cron.schedule('30 */5 * * * *', async () => {
     console.log('starting import');
@@ -26,8 +27,10 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 app.use(express.json({extended: true}));
 app.use(express.Router());
-app.use(morgan('combined'));
-
+app.use((req, res, next) => {
+    console.log(req.method, req.url);
+    next();
+});
 app.get('/', require('./src/controllers/index'));
 app.get('/feed', feedController.index);
 app.get('/feed/:id', feedController.one);
