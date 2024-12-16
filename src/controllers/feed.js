@@ -27,6 +27,7 @@ function readableDate(resource) {
 
 module.exports = {
     latest: async function (req, res) {
+        const dateNotBefore = moment().set({hour: 0, minute: 0, second: 0, millisecond: 0});
         const items = await feedRepository.getLatestChanges();
         const items2 = items.map(
             (item) => {
@@ -43,6 +44,11 @@ module.exports = {
                     readableDate: readableDate(resource),
                     message: analyzeChanges(changes, resource)
                 };
+            }
+        ).filter(
+            (item) => {
+
+                return item.resource.date >= dateNotBefore.format('YYYYMMDD');
             }
         );
         return res.render('home', {items: items2});

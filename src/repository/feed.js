@@ -2,7 +2,7 @@ const knexConfig = require('../../knexfile');
 const knex = require('knex')(knexConfig[process.env.NODE_ENV])
 
 module.exports = {
-    getLatestChanges: async function (since) {
+    getLatestChanges: async function () {
         return knex('feed')
             .where('change', 'U')
             .orderBy('created', 'desc')
