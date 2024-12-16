@@ -1,12 +1,13 @@
-<h1>Änderungen</h1>
-
-<ul class="items">
-  {{#each items}}
-  <li>
-      <p>
-          <small><small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small><br>
-            {{ readableDate }}<br><b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b>
-      </p>
-  </li>
-  {{/each}}
-</ul>
+<main class="container">
+    <h1>Änderungen</h1>
+    <ul class="items">
+{{#each items}}
+        <li>
+            <p>
+                <small><small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small><br>
+                {{ readableDate }}<br><b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b>
+            </p>
+        </li>
+{{/each}}
+    </ul>
+</main>

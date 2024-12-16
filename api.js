@@ -14,7 +14,7 @@ cron.schedule('30 */5 * * * *', async () => {
 const app = express();
 const port = parseInt(process.env.PORT) || 2999;
 app.set('json spaces', 2);
-
+app.use(express.static('public'));
 
 const handlebarsHelpers = expressHandlebars.create({
     helpers: require("./src/helpers/handlebars"),
