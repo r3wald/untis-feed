@@ -29,8 +29,8 @@ module.exports = {
     latest: async function (req, res) {
         const dateNotBefore = moment().set({hour: 0, minute: 0, second: 0, millisecond: 0});
         const items = await feedRepository.getLatestChanges();
-        const items2 = items.map(
-            (item) => {
+        const items2 = items
+            .map((item) => {
                 const resource = JSON.parse(item.json);
                 const changes = JSON.parse(item.changes);
                 return {
@@ -44,13 +44,12 @@ module.exports = {
                     readableDate: readableDate(resource),
                     message: analyzeChanges(changes, resource)
                 };
-            }
-        ).filter(
-            (item) => {
-
+            })
+            .filter((item) => {
                 return item.resource.date >= dateNotBefore.format('YYYYMMDD');
-            }
-        );
+            })
+            .sort((a, b) => a.readableDate < b.readableDate ? -1 : a.readableDate > b.readableDate ? 1 : 0)
+        ;
         return res.render('home', {items: items2});
     },
 
@@ -72,31 +71,24 @@ module.exports = {
         const lastTimestamp = items.length ? items[items.length - 1].created : null;
         const nextLink = lastTimestamp ? `/feed?since=${lastTimestamp}` : null;
 
-        const items2 = items.map(
-            (item) => {
-                const resource = JSON.parse(item.json);
-                const changes = JSON.parse(item.changes);
-                return {
-                    id: item.id,
-                    resource_type: item.resource_type,
-                    resource_id: item.resource_id,
-                    typeOfChange: item.change,
-                    timestamp: item.created,
-                    resource: resource,
-                    changes: changes,
-                    readableDate: readableDate(resource),
-                    message: analyzeChanges(changes, resource)
-                };
-            }
-        );
-        const response = new FeedResponse(
-            countPendingItems,
-            items2,
-            nextLink
-        );
+        const items2 = items.map((item) => {
+            const resource = JSON.parse(item.json);
+            const changes = JSON.parse(item.changes);
+            return {
+                id: item.id,
+                resource_type: item.resource_type,
+                resource_id: item.resource_id,
+                typeOfChange: item.change,
+                timestamp: item.created,
+                resource: resource,
+                changes: changes,
+                readableDate: readableDate(resource),
+                message: analyzeChanges(changes, resource)
+            };
+        });
+        const response = new FeedResponse(countPendingItems, items2, nextLink);
         res.json(response.getData());
-    },
-    one: async function (req, res) {
+    }, one: async function (req, res) {
         const id = req.params.id;
         const row = await feedRepository.get(id);
         const resource = JSON.parse(row.json);
