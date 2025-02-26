@@ -48,7 +48,7 @@ module.exports = {
             .filter((item) => {
                 return item.resource.date >= dateNotBefore.format('YYYYMMDD');
             })
-            .sort((a, b) => a.readableDate < b.readableDate ? -1 : a.readableDate > b.readableDate ? 1 : 0)
+            .sort((a, b) => a.readableDate > b.readableDate ? -1 : a.readableDate < b.readableDate ? 1 : 0)
         ;
         return res.render('home', {items: items2});
     },
