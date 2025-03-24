@@ -1,13 +1,26 @@
-<main class="container">
-    <h1>Änderungen</h1>
+<header class="container">
+    <div class="grid">
+        <div>
+            <h1>Aktuelle Änderungen</h1>
+        </div>
+        <div></div>
+        <div class="">
+            <small>Stand: {{ formatDateTime timestamp }}</small>
+        </div>
+    </div>
+
+</header>
+
+<main class="container overflow-auto">
     <ul class="items">
-{{#each items}}
-        <li>
-            <p>
-                <small><small><a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small><br>
-                {{ readableDate }}<br><b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b>
-            </p>
-        </li>
-{{/each}}
+        {{#each items}}
+            <li>
+                <p>
+                    {{ formatDateTime readableDate }}<br>
+                    <b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b><br>
+                        <small><small>veröffentlicht: <a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small>
+                </p>
+            </li>
+        {{/each}}
     </ul>
 </main>

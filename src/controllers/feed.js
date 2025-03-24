@@ -17,19 +17,19 @@ function analyzeChanges(changes, resource) {
     return "?";
 }
 
-function readableDate(resource) {
-    let result = '';
-    result += resource.date.toString().replace(/(\d\d\d\d)(\d\d)(\d\d)/, '$3.$2.$1');
-    result += ' ';
-    result += resource.startTime.toString().replace(/(\d\d?)(\d\d)/, '$1\:$2');
-    return result
+function toMoment(resource) {
+    const datetimeString = resource.date.toString() +
+        ' ' +
+        (resource.startTime < 1000 ? '0' : '') +
+        resource.startTime.toString() +
+        '00'
+    ;
+    return moment(datetimeString, 'YYYYMMDD HHmmss', 'de');
 }
 
 module.exports = {
     latest: async function (req, res) {
-        const dateNotBefore = moment().set({hour: 0, minute: 0, second: 0, millisecond: 0});
-        const items = await feedRepository.getLatestChanges();
-        const items2 = items
+        let items = (await feedRepository.getLatestChanges())
             .map((item) => {
                 const resource = JSON.parse(item.json);
                 const changes = JSON.parse(item.changes);
@@ -41,20 +41,15 @@ module.exports = {
                     timestamp: item.created,
                     resource: resource,
                     changes: changes,
-                    readableDate: readableDate(resource),
+                    readableDate: toMoment(resource),
                     message: analyzeChanges(changes, resource)
                 };
             })
             .filter((item) => {
-                return item.resource.date >= dateNotBefore.format('YYYYMMDD');
+                return moment().subtract(1, "days").isBefore(item.readableDate);
             })
-            .sort((a, b) => {
-		    let x = a.resource.date.toString() + ' ' + a.resource.startTime.toString();
-		    let y = b.resource.date.toString() + ' ' + b.resource.startTime.toString();
-		    return x < y ? -1 : x > y ? 1 : 0;
-	    })
-        ;
-        return res.render('home', {items: items2});
+            .sort((a, b) => a.readableDate.valueOf() - b.readableDate.valueOf());
+        return res.render('home', {items: items});
     },
 
     index: async function (req, res) {
@@ -86,7 +81,7 @@ module.exports = {
                 timestamp: item.created,
                 resource: resource,
                 changes: changes,
-                readableDate: readableDate(resource),
+                readableDate: toMoment(resource),
                 message: analyzeChanges(changes, resource)
             };
         });
@@ -105,7 +100,7 @@ module.exports = {
             timestamp: row.created,
             resource: resource,
             changes: changes,
-            readableDate: readableDate(resource),
+            readableDate: toMoment(resource),
             message: analyzeChanges(changes, resource)
         };
         res.json(response);
