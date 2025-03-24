@@ -13,6 +13,9 @@ function analyzeChanges(changes, resource) {
     if (changes?.added?.info) {
         return "Neue Information: " + changes.added.info;
     }
+    if (changes?.added?.substText) {
+        return "Neuer Hinweis: " + changes.added.substText;
+    }
     //console.log(changes);
     return "?";
 }

@@ -4,7 +4,7 @@
             <h1>Aktuelle Änderungen</h1>
         </div>
         <div></div>
-        <div class="">
+        <div style="text-align: right;">
             <small>Stand: {{ formatDateTime timestamp }}</small>
         </div>
     </div>
@@ -16,9 +16,13 @@
         {{#each items}}
             <li>
                 <p>
-                    {{ formatDateTime readableDate }}<br>
-                    <b>{{ resource.su.0.longname }} &ndash; <b>{{{ message }}}</b><br>
-                        <small><small>veröffentlicht: <a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a></small></small>
+                    <b>{{ formatDateTime readableDate }}</b>
+                    <br>
+                    <b>{{ resource.su.0.longname }} &ndash; {{{ message }}}</b>
+                    <br>
+                    <small><small>
+                        veröffentlicht: <a href="/feed/{{id}}">{{ formatDateTime timestamp }}</a>
+                    </small></small>
                 </p>
             </li>
         {{/each}}
