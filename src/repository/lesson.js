@@ -38,8 +38,8 @@ module.exports = {
             .insert({
                 id: data.id,
                 json: JSON.stringify(data),
-                created: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW')"),
-                updated: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW')")
+                created: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%fZ', 'NOW')"),
+                updated: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%fZ', 'NOW')")
             })
             .onConflict(
                 'id'
@@ -47,7 +47,7 @@ module.exports = {
             .merge({
                 id: data.id,
                 json: JSON.stringify(data),
-                updated: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%f', 'NOW')")
+                updated: knex.raw("STRFTIME('%Y-%m-%d %H:%M:%fZ', 'NOW')")
             })
             .then(() => {
             })
