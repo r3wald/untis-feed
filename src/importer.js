@@ -9,6 +9,8 @@ module.exports = {
 
     import: async function(){
 
+        console.log("import started");
+
         const untis = new WebUntis(
             process.env.UNTIS_SCHOOL,
             process.env.UNTIS_USERNAME,
@@ -41,6 +43,8 @@ module.exports = {
                 await this.add('lesson', lesson);
             })
         );
+
+        console.log("import finished: ", result.length, " lessons processed");
 
         return result;
     },
