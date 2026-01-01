@@ -9,8 +9,6 @@ module.exports = {
 
     import: async function(){
 
-        console.log("starting import");
-
         const untis = new WebUntis(
             process.env.UNTIS_SCHOOL,
             process.env.UNTIS_USERNAME,
@@ -38,11 +36,13 @@ module.exports = {
             fs.writeFileSync(fileName, JSON.stringify(timetable, null, 2));
         }
 
-        return Promise.all(
+        let result = Promise.all(
             timetable.map(async (lesson) => {
                 await this.add('lesson', lesson);
             })
         );
+
+        return result;
     },
 
     add: async function (resourceType, newResource) {
