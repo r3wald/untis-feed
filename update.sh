@@ -18,7 +18,7 @@ npm run migrate
 PM2_PID=$(pm2 pid $PM2_NAME)
 
 if [ -n "$PM2_PID" ]; then
-  pm2 restart $PM2_NAME
+  pm2 restart --update-env $PM2_NAME
 else
   pm2 start --name $PM2_NAME npm -- start
 fi
